@@ -1,7 +1,5 @@
 # rpi-consul
 
-[![dockeri.co](http://dockeri.co/image/hypriot/rpi-consul)](https://registry.hub.docker.com/u/hypriot/rpi-consul/)
-
 Raspberry Pi compatible Docker image with [Consul](http://consul.io).
 
 Run all the commands from within the project root directory.
