@@ -9,7 +9,7 @@ Run all the commands from within the project root directory.
 - [Source Project Page](https://github.com/hypriot)
 - [Source Repository](https://github.com/hypriot/rpi-consul)
 - [Dockerfile](https://github.com/hypriot/rpi-consul/blob/master/Dockerfile)
-- [DockerHub] (https://hub.docker.com/u/hypriot/rpi-consul/)
+- [DockerHub] (https://hub.docker.com/r/hypriot/rpi-consul/)
 
 
 #### Build the Docker Image
