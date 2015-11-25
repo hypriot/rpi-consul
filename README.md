@@ -8,17 +8,12 @@ Run all the commands from within the project root directory.
 - [Source Project Page](https://github.com/hypriot)
 - [Source Repository](https://github.com/hypriot/rpi-consul)
 - [Dockerfile](https://github.com/hypriot/rpi-consul/blob/master/Dockerfile)
-- [DockerHub] (https://registry.hub.docker.com/u/hypriot/rpi-consul/)
+- [DockerHub] (https://hub.docker.com/u/hypriot/rpi-consul/)
 
 
 #### Build the Docker Image
 ```bash
-make build
-```
-
-#### Run the Docker Image and get the version of the installed *Consul*
-```bash
-make version
+make REGISTRY_NAMESPACE=hypriot dockerbuild
 ```
 
 #### Push the Docker Image to the Docker Hub
@@ -26,7 +21,7 @@ make version
 * Second push the Docker Image to the official Docker Hub
 
 ```bash
-make push
+make dockerpush
 ```
 
 ## License
