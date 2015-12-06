@@ -1,0 +1,61 @@
+debug: true
+
+build:
+  image: hypriot/rpi-golang:1.5
+  commands:
+    - apt-get update && apt-get install unzip wget
+    - export VERSION=$(cat VERSION)
+    - git clone -b v${VERSION} https://github.com/hashicorp/consul.git ${GOPATH}/src/github.com/hashicorp/consul
+    - cp ./resources/build.sh.patch ${GOPATH}/src/github.com/hashicorp/consul/scripts
+    - cd ${GOPATH}/src/github.com/hashicorp/consul
+    - git apply scripts/build.sh.patch
+    - make VERBOSE=1 CGO_LDFLAGS='-extldflags -static ' GOARCH=arm GOOS=linux
+    - echo -e "#####\ncreate tar and checksum\n#####"
+    - cp consul /drone/src/github.com/hypriot/rpi-consul/content/
+    - wget -O web_ui.zip https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
+    - unzip web_ui.zip -d /drone/src/github.com/hypriot/rpi-consul/content/
+    - chmod a+x /drone/src/github.com/hypriot/rpi-consul/content/consul
+    - basename `git rev-parse --show-toplevel`
+    - export PACKAGE_NAME=consul
+    - export TIMESTAMP=$(date +"%Y-%m-%d_%H%M")
+    - export REPO=$(git rev-parse --short HEAD)
+    - export BUILD_RESULTS=/drone/src/buildresult
+    - export BUILD_DIR=${BUILD_RESULTS}/arm-binaries/{PACKAGE_NAME}/${TIMESTAMP}_${REPO}
+    - mkdir -p ${BUILD_DIR}
+    - cd /drone/src/github.com/hypriot/rpi-consul/content/ && tar czf ${BUILD_DIR}/$(PACKAGE_NAME}.tar.gz swarm etc/
+    - cd ${BUILD_DIR} && shasum -a 256 ${PACKAGE_NAME}.tar.gz > ${PACKAGE_NAME}.tar.gz.sha256
+
+publish:
+  docker:
+#    environment:
+#      - DOCKER_LAUNCH_DEBUG=true
+    username: $$DOCKER_USER
+    password: $$DOCKER_PASS
+    email: $$DOCKER_EMAIL
+    repo: hypriot/rpi-consul
+    tag: 
+      - v1.0.0
+      - latest
+    save:
+      file: /drone/src/buildresult/latest/consul.tar
+
+  s3:   
+    acl: public-read
+    region: $$AWS_DEFAULT_REGION
+    bucket: $$AWS_BUCKET
+    access_key: $$AWS_ACCESS_KEY_ID
+    secret_key: $$AWS_SECRET_ACCESS_KEY
+    source: /drone/src/buildresult/
+    target: /
+    recursive: true
+
+notify:
+  slack:
+    webhook_url: $$SLACK_WEBHOOK_URL
+    channel: buildstatus
+    username: Drone
+    when:
+      started: false
+      success: true
+      failure: true
+
