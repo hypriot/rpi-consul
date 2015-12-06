@@ -12,7 +12,7 @@ build:
     - make VERBOSE=1 CGO_LDFLAGS='-extldflags -static ' GOARCH=arm GOOS=linux
     - echo -e "#####\ncreate tar and checksum\n#####"
     - mkdir -p /drone/src/github.com/hypriot/rpi-consul/content/
-    - cp consul /drone/src/github.com/hypriot/rpi-consul/content/
+    - cp bin/consul /drone/src/github.com/hypriot/rpi-consul/content/
     - wget -O web_ui.zip https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
     - unzip web_ui.zip -d /drone/src/github.com/hypriot/rpi-consul/content/
     - chmod a+x /drone/src/github.com/hypriot/rpi-consul/content/consul
