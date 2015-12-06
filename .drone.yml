@@ -6,11 +6,12 @@ build:
     - apt-get update && apt-get install unzip wget
     - export VERSION=$(cat VERSION)
     - git clone -b v${VERSION} https://github.com/hashicorp/consul.git ${GOPATH}/src/github.com/hashicorp/consul
-    - cp ./resources/build.sh.patch ${GOPATH}/src/github.com/hashicorp/consul/scripts
+    - cp /drone/src/github.com/hypriot/rpi-consul/resources/build.sh.patch ${GOPATH}/src/github.com/hashicorp/consul/scripts
     - cd ${GOPATH}/src/github.com/hashicorp/consul
     - git apply scripts/build.sh.patch
     - make VERBOSE=1 CGO_LDFLAGS='-extldflags -static ' GOARCH=arm GOOS=linux
     - echo -e "#####\ncreate tar and checksum\n#####"
+    - mkdir -p /drone/src/github.com/hypriot/rpi-consul/content/
     - cp consul /drone/src/github.com/hypriot/rpi-consul/content/
     - wget -O web_ui.zip https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
     - unzip web_ui.zip -d /drone/src/github.com/hypriot/rpi-consul/content/
