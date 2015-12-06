@@ -9,7 +9,7 @@ build:
     - cp /drone/src/github.com/hypriot/rpi-consul/resources/build.sh.patch ${GOPATH}/src/github.com/hashicorp/consul/scripts
     - cd ${GOPATH}/src/github.com/hashicorp/consul
     - git apply scripts/build.sh.patch
-    - make VERBOSE=1 CGO_LDFLAGS='-extldflags -static ' GOARCH=arm GOOS=linux
+    - $(make VERBOSE=1 CGO_LDFLAGS='-extldflags -static ' GOARCH=arm GOOS=linux)
     - echo -e "#####\ncreate tar and checksum\n#####"
     - mkdir -p /drone/src/github.com/hypriot/rpi-consul/content/
     - cp bin/consul /drone/src/github.com/hypriot/rpi-consul/content/
