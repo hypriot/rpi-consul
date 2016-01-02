@@ -15,7 +15,7 @@ build:
     - curl -L ${CHECKSUMS} > allchecksums
     - grep web allchecksums > checksums
     - grep linux_arm allchecksums >> checksums
-    - shasum256 -c checksums ./
+    - sha256sum -c checksums ./
     - unzip -d content/ consul_${VERSION}_linux_arm.zip
     - unzip -d content/ui/ consul_${VERSION}_web_ui.zip
     - ls -la content/
