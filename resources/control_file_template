@@ -1,9 +1,0 @@
-Package: consul
-Version: <VERSION>
-Section: admin
-Priority: optional
-Architecture: armhf
-Essential: no
-Installed-Size: 14336
-Maintainer: blog.hypriot.com
-Description: Service discovery and configuration made easy. Distributed, highly available and datacenter-aware.
