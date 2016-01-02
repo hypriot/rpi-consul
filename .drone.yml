@@ -7,10 +7,15 @@ build:
     - export VERSION=0.6.0
     - export UI_VERSION=${VERSION}
     - export URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_linux_arm.zip
-    - export UI_URL=https://releases.hashicorp.com/consul/${UI_VERSION}/consul_${UI_VERSION}_web_ui.zip
+    - export UI_URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
+    - export CHECKSUMS=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_SHA256SUMS
     - mkdir -p content/ui
     - curl -L ${URL} > ./consul.zip
     - curl -L ${UI_URL} > ./consul_ui.zip
+    - curl -L ${CHECKSUMS} > allchecksums
+    - grep web allchecksums > checksums
+    - grep linux_arm allchecksums >> checksums
+    - shasum256 -c checksums ./
     - unzip -d content/ consul.zip
     - unzip -d content/ui/ consul_ui.zip
     - ls -la content/
