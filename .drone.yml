@@ -4,7 +4,7 @@ build:
   image: armdrone/drone-plugin-base
   commands:
     - apk update && apk add tar gzip zip curl
-    - export VERSION=0.6.3
+    - export VERSION=0.6.4
     - export UI_VERSION=${VERSION}
     - export URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_linux_arm.zip
     - export UI_URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
@@ -30,7 +30,7 @@ publish:
     repo: hypriot/rpi-consul
     tag: 
       - latest
-      - "0.6.3"
+      - "0.6.4"
 
 notify:
   slack:
