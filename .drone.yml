@@ -1,0 +1,43 @@
+#debug: true
+
+build:
+  image: armdrone/drone-plugin-base
+  commands:
+    - apk update && apk add tar gzip zip curl
+    - export VERSION=0.6.3
+    - export UI_VERSION=${VERSION}
+    - export URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_linux_arm.zip
+    - export UI_URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
+    - export CHECKSUMS=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_SHA256SUMS
+    - mkdir -p content/ui
+    - curl -L ${URL} > ./consul_${VERSION}_linux_arm.zip
+    - curl -L ${UI_URL} > ./consul_${VERSION}_web_ui.zip
+    - curl -L ${CHECKSUMS} > allchecksums
+    - grep web allchecksums > checksums
+    - grep linux_arm allchecksums >> checksums
+    - sha256sum -c checksums ./
+    - unzip -d content/ consul_${VERSION}_linux_arm.zip
+    - unzip -d content/ui/ consul_${VERSION}_web_ui.zip
+    - ls -la content/
+
+publish:
+  docker:
+#    environment:
+#      - DOCKER_LAUNCH_DEBUG=true
+    username: $$DOCKER_USER
+    password: $$DOCKER_PASS
+    email: $$DOCKER_EMAIL
+    repo: hypriot/rpi-consul
+    tag: 
+      - latest
+      - "0.6.3"
+
+notify:
+  slack:
+    webhook_url: $$SLACK_WEBHOOK_URL
+    channel: buildstatus
+    username: Drone
+    when:
+      started: false
+      success: true
+      failure: true

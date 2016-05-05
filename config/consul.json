@@ -2,9 +2,16 @@
   data_dir: "/data",
   ui_dir: "/ui",
   client_addr: "0.0.0.0",
+  bootstrap: true,
+  server: true,
+  leave_on_terminate: true,
+  disable_update_check: true
+  recursor: "8.8.8.8",
   ports: {
     dns: 53
   },
-  recursor: "8.8.8.8",
-  disable_update_check: true
+  dns_config: {
+     allow_stale: true,
+     max_stale: "1s"
+    }
 }
