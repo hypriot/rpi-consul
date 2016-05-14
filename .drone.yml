@@ -4,8 +4,7 @@ build:
   image: armdrone/drone-plugin-base
   commands:
     - apk update && apk add tar gzip zip curl
-    - export VERSION=0.6.4
-    - export UI_VERSION=${VERSION}
+    - export VERSION=$(echo $$TAG | tr -d v)
     - export URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_linux_arm.zip
     - export UI_URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
     - export CHECKSUMS=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_SHA256SUMS
@@ -28,9 +27,22 @@ publish:
     password: $$DOCKER_PASS
     email: $$DOCKER_EMAIL
     repo: hypriot/rpi-consul
-    tag: 
-      - latest
-      - "0.6.4"
+    file: Dockerfile
+    tag:
+      -latest
+      - $$TAG
+    when:
+      event: tag
+    save:
+      destination: /drone/src/github.com/hypriot/rpi-consul/result/rpi-consul_$$TAG_dockerimage.tar
+      tag: $$TAG
+
+  github_release:
+    api_key: $$GITHUB_RELEASE_TOKEN
+    files:
+      - /drone/src/github.com/hypriot/rpi-consul/result/rpi-consul_$$TAG_dockerimage.tar
+    when:
+      event: tag
 
 notify:
   slack:
