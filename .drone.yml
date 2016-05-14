@@ -8,7 +8,7 @@ build:
     - export URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_linux_arm.zip
     - export UI_URL=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_web_ui.zip
     - export CHECKSUMS=https://releases.hashicorp.com/consul/${VERSION}/consul_${VERSION}_SHA256SUMS
-    - mkdir -p content/ui
+    - mkdir -p content/ui result
     - curl -L ${URL} > ./consul_${VERSION}_linux_arm.zip
     - curl -L ${UI_URL} > ./consul_${VERSION}_web_ui.zip
     - curl -L ${CHECKSUMS} > allchecksums
@@ -29,7 +29,6 @@ publish:
     repo: hypriot/rpi-consul
     file: Dockerfile
     tag:
-      -latest
       - $$TAG
     when:
       event: tag
