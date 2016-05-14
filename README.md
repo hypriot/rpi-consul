@@ -13,17 +13,21 @@ Run all the commands from within the project root directory.
 
 
 #### Build the Docker Image
-```bash
-make REGISTRY_NAMESPACE=hypriot dockerbuild
-```
-
-#### Push the Docker Image to the Docker Hub
-* First use a `docker login` with username, password and email address
-* Second push the Docker Image to the official Docker Hub
 
 ```bash
-make dockerpush
+make TAG=<VERSION> tag
 ```
+
+VERSION is the official consul version
+which can be found at https://releases.hashicorp.com/consul/
+
+example:
+consul version: `0.6.4` with a leading `v` as it is a git tag:
+
+```bash
+make tag VERSION=v0.6.4 tag
+```
+
 
 ## License
 
@@ -48,4 +52,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
